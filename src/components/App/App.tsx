@@ -1,5 +1,5 @@
 import * as React from 'react';
-import BEM, {IBEMProps} from 'src/libs/@BEM';
+import {BEM, IBEMProps} from "../../libs/BEM/BEM";
 import Sudoku from "../Sudoku/views/Sudoku";
 import './App.css';
 

@@ -1,8 +1,9 @@
 import * as _ from "lodash";
 import * as React from 'react';
-import BEMComponent from "../../../libs/@BEMClass";
+import BEMComponent from "../../../libs/BEM/BEMComponent";
 import {genCell, ICell, MAX_POS_X, MAX_POS_Y, MIN_POS_X, MIN_POS_Y} from "../core/Cell";
 import "../css/Sudoku.css";
+import SudokuKeyboard from "./SudokuKeyboard";
 
 class Sudoku extends BEMComponent {
 
@@ -21,29 +22,48 @@ class Sudoku extends BEMComponent {
 		this.state = {...this.state, taskDefault: task, currentStateTask: task};
 	}
 
+	public openKeyboard(cellKey: string) {
+		// TODO: открытие окна для ввода числа
+		console.log('openKeyboard:cellKey:', cellKey);
+
+	// noinspection RequiredAttributes
+		return (<SudokuKeyboard cellKey={cellKey}/>);
+	}
+
+	public onClickOpenKeyboard(cellKey: string) {
+		// return (event: React.MouseEvent<HTMLElement>) => {
+		return () => {
+			this.openKeyboard(cellKey);
+		}
+	}
+
 	public renderCells(cells: ICell[]): any {
 		return (
-			<div className={this.elem('grid')}>{_.map(cells, (cell: ICell) => this.renderCell(cell))}
-			</div>
+			<div className={this.elem('grid')}>{_.map(cells, (cell: ICell) => this.renderCell(cell))}</div>
 		);
-
 	}
 
 	public renderCell(cell: ICell): any {
-		let key = cell.posX + '-' + cell.posY;
 		return (
-			<div className={this.elem('cell', 'pos', key)} key={key}>{cell.value}</div>
+			<div
+				onClick={this.onClickOpenKeyboard(cell.key)}
+				className={
+					this.joinClasses(this.elem('cell', 'pos', cell.key))}
+				key={cell.key}
+			>{cell.value}</div>
 		);
-
 	}
+
+
+
 
 	public render() {
 		const currentStateTask = _.get(this.state, 'currentStateTask');
-		console.log('currentStateTask:', currentStateTask);
 
 		return (
 			<div className={this.block()}>
 				{currentStateTask && this.renderCells(currentStateTask)}
+				{this.openKeyboard('0-0')}
 			</div>
 		);
 	}

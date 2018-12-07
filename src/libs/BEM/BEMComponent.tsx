@@ -1,7 +1,14 @@
+import * as _ from "lodash";
 import * as React from "react";
 
-class BEMClass extends React.Component {
-	protected componentName = '';
+export default class BEMComponent extends React.Component {
+	public componentName: string;
+
+	constructor(props: any) {
+		super(props);
+
+		this.componentName = 'BEMComponent';
+	}
 
 	public block(mod: string = '', modValue: string = '') {
 		let className = this.componentName;
@@ -27,7 +34,8 @@ class BEMClass extends React.Component {
 		}
 		return className;
 	}
+
+	public joinClasses(...classes: string[]): string {
+		return _.join(_.uniq(classes), ' ');
+	}
 }
-
-
-export default BEMClass;
