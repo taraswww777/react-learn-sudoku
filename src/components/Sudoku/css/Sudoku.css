@@ -1,0 +1,53 @@
+.sudoku {
+}
+
+.sudoku__grid {
+	display: grid;
+	grid-template-columns: 11.1111111% 11.1111111% 11.1111111% 11.1111111% 11.1111111% 11.1111111% 11.1111111% 11.1111111% 11.1111111%;
+	grid-template-rows: 11.1111111% 11.1111111% 11.1111111% 11.1111111% 11.1111111% 11.1111111% 11.1111111% 11.1111111% 11.1111111%;
+}
+
+.sudoku__cell {
+	border: 1px dotted #ccc;
+}
+
+[class*="sudoku__cell--pos_0"] {
+	border-top: solid #000;
+}
+
+.sudoku__cell--pos_2-0, .sudoku__cell--pos_5-0,
+.sudoku__cell--pos_2-1, .sudoku__cell--pos_5-1,
+.sudoku__cell--pos_2-2, .sudoku__cell--pos_5-2,
+.sudoku__cell--pos_2-3, .sudoku__cell--pos_5-3,
+.sudoku__cell--pos_2-4, .sudoku__cell--pos_5-4,
+.sudoku__cell--pos_2-5, .sudoku__cell--pos_5-5,
+.sudoku__cell--pos_2-6, .sudoku__cell--pos_5-6,
+.sudoku__cell--pos_2-7, .sudoku__cell--pos_5-7,
+.sudoku__cell--pos_2-8, .sudoku__cell--pos_5-8,
+[class*="sudoku__cell--pos_8"] {
+	border-bottom:  solid #000;
+}
+
+.sudoku__cell--pos_0-0, .sudoku__cell--pos_0-6, .sudoku__cell--pos_0-3,
+.sudoku__cell--pos_1-0, .sudoku__cell--pos_1-6, .sudoku__cell--pos_1-3,
+.sudoku__cell--pos_2-0, .sudoku__cell--pos_2-6, .sudoku__cell--pos_2-3,
+.sudoku__cell--pos_3-0, .sudoku__cell--pos_3-6, .sudoku__cell--pos_3-3,
+.sudoku__cell--pos_4-0, .sudoku__cell--pos_4-6, .sudoku__cell--pos_4-3,
+.sudoku__cell--pos_5-0, .sudoku__cell--pos_5-6, .sudoku__cell--pos_5-3,
+.sudoku__cell--pos_6-0, .sudoku__cell--pos_6-6, .sudoku__cell--pos_6-3,
+.sudoku__cell--pos_7-0, .sudoku__cell--pos_7-6, .sudoku__cell--pos_7-3,
+.sudoku__cell--pos_8-0, .sudoku__cell--pos_8-6, .sudoku__cell--pos_8-3 {
+	border-left:  solid #000;
+}
+
+.sudoku__cell--pos_0-8,
+.sudoku__cell--pos_1-8,
+.sudoku__cell--pos_2-8,
+.sudoku__cell--pos_3-8,
+.sudoku__cell--pos_4-8,
+.sudoku__cell--pos_5-8,
+.sudoku__cell--pos_6-8,
+.sudoku__cell--pos_7-8,
+.sudoku__cell--pos_8-8 {
+	border-right: solid #000;
+}

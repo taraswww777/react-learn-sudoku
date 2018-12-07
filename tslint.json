@@ -1,4 +1,22 @@
 {
+  "defaultSeverity": "error",
+  "jsRules": {
+  },
+  "rules": {
+    "deprecation": true,
+    "eofline": true,
+    "indent": [true, "tabs", 2],
+    "max-line-length": [true, 150],
+    "no-duplicate-imports": true,
+    "no-mergeable-namespace": true,
+    "interface-name": [true, "always-prefix"],
+    "array-type": [true, "array"],
+    "encoding": true,
+    "whitespace": [true, "check-branch", "check-operator", "check-typecast"],
+    "no-console": false,
+    "prefer-const": false
+  },
+  "rulesDirectory": [],
   "extends": ["tslint:recommended", "tslint-react", "tslint-config-prettier"],
   "linterOptions": {
     "exclude": [
