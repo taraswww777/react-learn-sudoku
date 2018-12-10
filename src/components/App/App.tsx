@@ -1,6 +1,6 @@
 import * as React from 'react';
 import {BEM, IBEMProps} from "../../libs/BEM/BEM";
-import Sudoku from "../Sudoku/views/Sudoku";
+import Sudoku from "../Sudoku";
 import './App.css';
 
 const componentName = 'app';
