@@ -1,14 +1,12 @@
 import * as _ from "lodash";
 import * as React from "react";
 
+export type fnBEMBlock = (mod?: string, modValue?: string) => string;
+export type fnBEMElem = (nameElement: string, mod?: string, modValue?: string) => string;
+export type fnBEMEJoinClasses = (...classes: any) => string;
+
 export default class BEMComponent extends React.Component {
-	public componentName: string;
-
-	constructor(props: any) {
-		super(props);
-
-		this.componentName = 'BEMComponent';
-	}
+	protected componentName: string = 'BEMComponent';
 
 	public block(mod: string = '', modValue: string = '') {
 		let className = this.componentName;
@@ -35,7 +33,15 @@ export default class BEMComponent extends React.Component {
 		return className;
 	}
 
-	public joinClasses(...classes: string[]): string {
-		return _.join(_.uniq(classes), ' ');
+	public joinClasses(...classes: any): string {
+		let newClasses: string[] = [];
+		let separator: string = ' ';
+
+		_.map(classes, (classItem: string) => {
+			let split = _.split(classItem, separator);
+			newClasses = _.concat(split, newClasses)
+		});
+
+		return _.join(newClasses, separator);
 	}
 }
