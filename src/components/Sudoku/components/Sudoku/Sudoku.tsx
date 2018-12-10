@@ -1,7 +1,8 @@
 import * as _ from "lodash";
 import * as React from 'react';
 import BEMComponent from "../../../../libs/BEM/BEMComponent";
-import SudokuCell, {genCell, ICell, MAX_POS_X, MAX_POS_Y, MIN_POS_X, MIN_POS_Y} from "../SudokuCell/SudokuCell";
+import {genCell, ICell, MAX_POS_X, MAX_POS_Y, MIN_POS_X, MIN_POS_Y, valid} from '../../libs';
+import SudokuCell from "../SudokuCell/SudokuCell";
 import SudokuKeyboard from "../SudokuKeyboard/SudokuKeyboard";
 import "./Sudoku.css";
 
@@ -84,12 +85,14 @@ class Sudoku extends BEMComponent {
 				}
 			});
 
-			this.closeKeyboard();
-			this.historyPush(currentStateTask);
+			if (valid(newStateTask)) {
+				this.closeKeyboard();
+				this.historyPush(currentStateTask);
 
-			this.setState((state) => {
-				return {...state, currentStateTask: newStateTask}
-			});
+				this.setState((state) => {
+					return {...state, currentStateTask: newStateTask}
+				});
+			}
 		}
 	}
 

@@ -1,8 +1,8 @@
 import * as _ from "lodash";
 import * as React from 'react';
 import {BEM, IBEMProps} from "../../../../libs/BEM/BEM";
+import {ICell} from "../../libs";
 import {fnCloseKeyboard, fnSetCellValue} from "../Sudoku/Sudoku";
-import {ICell} from "../SudokuCell/SudokuCell";
 import "./SudokuKeyboard.css";
 
 const keys: number[] = [
