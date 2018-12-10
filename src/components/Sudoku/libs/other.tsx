@@ -40,31 +40,37 @@ export function getNumberAreaByPos(posX: number, posY: number): number {
 
 
 export function splitToRowsAndCols(stateTask: ICell[]): ISplitToRowsAndColl {
-	let areaNum: number = 0;
+	let areaNum: number;
 	const resultSplit: ISplitToRowsAndColl = {
 		area: [],
 		cols: [],
 		rows: [],
 	};
 
-	resultSplit.rows = resultSplit.cols = resultSplit.area = [];
+	resultSplit.rows = [];
+	resultSplit.cols = [];
+	resultSplit.area = [];
 
-	// тут тажется можно ещё както оптимизировать избавишись от if
 	_.map(stateTask, (cell: ICell) => {
 		areaNum = getNumberAreaByPos(cell.posX, cell.posY);
-		if (!_.isArray(resultSplit.cols[cell.posY])) {
-			resultSplit.cols[cell.posY] = [];
-		}
 		if (!_.isArray(resultSplit.rows[cell.posX])) {
-			resultSplit.rows[cell.posX] = [];
-		}
-		if (!_.isArray(resultSplit.area[areaNum])) {
-			resultSplit.area[areaNum] = [];
+			resultSplit.rows[cell.posX] = [cell];
+		} else {
+			resultSplit.rows[cell.posX] = _.concat(resultSplit.rows[cell.posX], cell);
 		}
 
-		resultSplit.area[areaNum].push(cell);
-		resultSplit.cols[cell.posY][cell.posX] = cell;
-		resultSplit.rows[cell.posX][cell.posY] = cell;
+		if (!_.isArray(resultSplit.cols[cell.posY])) {
+			resultSplit.cols[cell.posY] = [cell];
+		} else {
+			resultSplit.cols[cell.posY] = _.concat(resultSplit.cols[cell.posY], cell);
+		}
+
+
+		if (!_.isArray(resultSplit.area[areaNum])) {
+			resultSplit.area[areaNum] = [cell];
+		} else {
+			resultSplit.area[areaNum] = _.concat(resultSplit.area[areaNum], cell);
+		}
 	});
 
 	return resultSplit;

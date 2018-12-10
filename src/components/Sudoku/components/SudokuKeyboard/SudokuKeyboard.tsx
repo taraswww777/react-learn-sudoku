@@ -27,6 +27,7 @@ function onClickSetValue(newValue: number, cell: ICell, setCellValue: fnSetCellV
 
 interface ISudokuKeyboardProps extends IBEMProps {
 	cell: ICell;
+	keyboardWrongValue?: number | null
 	closeKeyboard: fnCloseKeyboard;
 	setCellValue: fnSetCellValue;
 }
@@ -45,8 +46,10 @@ function SudokuKeyboard(props: ISudokuKeyboardProps) {
 							onClick={onClickSetValue(key, props.cell, props.setCellValue)}
 							className={props.joinClasses(
 								props.elem('key'),
-								props.elem('key', props.cell.value === key ? 'current' : '')
-							)}>{key}</div>
+								props.elem('key', props.cell.value === key ? 'current' : ''),
+								props.elem('key', props.keyboardWrongValue === key ? 'wrong' : '')
+							)}
+						>{key}</div>
 					)}
 				</div>
 

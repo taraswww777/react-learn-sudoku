@@ -23,9 +23,14 @@
 	justify-content: center;
 }
 
+.sudoku__cell--current {
+	background: rgba(135, 206, 235, 0.5);
+	border: red 1px solid;
+}
+
 .sudoku__cell:hover {
 	transition: 0.25s linear;
-	background: #000;
+	background: rgba(0, 0, 0, 0.5);
 	color: #fff;
 }
 

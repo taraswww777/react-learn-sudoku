@@ -62,6 +62,15 @@
 	background: #cccccc;
 }
 
+.sudoku-keyboard__key--wrong{
+	background: rgba(255, 0, 0, 0.5);
+}
+.sudoku-keyboard__key--wrong:hover {
+	transition: 0.25s linear;
+	background: rgba(255, 0, 0, 0.8);
+	color: #fff;
+}
+
 .sudoku-keyboard__key--clear {
 
 }

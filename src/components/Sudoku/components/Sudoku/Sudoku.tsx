@@ -27,25 +27,41 @@ class Sudoku extends BEMComponent {
 
 		this.state = {
 			...this.state,
+			currentCell: {},
 			currentStateTask: task,
 			history: [],
 			historyNeedWrite: false,
 			keyboardCell: {},
 			keyboardIsOpen: false,
+			keyboardWrongValue: null,
 			taskDefault: task,
 		};
 
 		this.openKeyboard = this.openKeyboard.bind(this);
 		this.closeKeyboard = this.closeKeyboard.bind(this);
 		this.setCellValue = this.setCellValue.bind(this);
+		this.setCurrentCell = this.setCurrentCell.bind(this);
+	}
+
+	public setCurrentCell(cell: ICell) {
+		this.setState((state) => {
+
+			return {
+				...state,
+				currentCell: cell
+			}
+		});
 	}
 
 	public openKeyboard(cell: ICell) {
-		this.setState({
-			...this.state,
+		this.setCurrentCell(cell);
+
+		this.setState((state) => ({
+			...state,
 			keyboardCell: cell,
 			keyboardIsOpen: true,
-		});
+			keyboardWrongValue: null,
+		}));
 	}
 
 	public closeKeyboard() {
@@ -92,11 +108,17 @@ class Sudoku extends BEMComponent {
 				this.setState((state) => {
 					return {...state, currentStateTask: newStateTask}
 				});
+			} else {
+				this.setState((state) => {
+					return {...state, keyboardWrongValue: cell.value}
+				});
 			}
 		}
 	}
 
 	public render() {
+		const currentCellKey = _.get(this.state, 'currentCell.key', '');
+		const keyboardWrongValue = _.get(this.state, 'keyboardWrongValue', null);
 		const currentStateTask = _.get(this.state, 'currentStateTask');
 		const keyboardIsOpen = _.get(this.state, 'keyboardIsOpen', false);
 		const keyboardCell = _.get(this.state, 'keyboardCell', {});
@@ -105,7 +127,11 @@ class Sudoku extends BEMComponent {
 			<div className={this.block()}>
 				{currentStateTask && <div className={this.elem('grid')}>
 					{_.map(currentStateTask, (cell: ICell) => <div
-							className={this.elem('cell', 'pos', cell.key)}
+							className={this.joinClasses(
+								this.elem('cell', 'pos', cell.key),
+								this.elem('cell', currentCellKey === cell.key ? 'current' : '')
+							)
+							}
 							key={cell.key}>
 							<SudokuCell
 								openKeyboard={this.openKeyboard}
@@ -116,6 +142,7 @@ class Sudoku extends BEMComponent {
 
 				{keyboardIsOpen && keyboardCell && <SudokuKeyboard
 					cell={keyboardCell}
+					keyboardWrongValue={keyboardWrongValue}
 					setCellValue={this.setCellValue}
 					closeKeyboard={this.closeKeyboard}
 				/>}
