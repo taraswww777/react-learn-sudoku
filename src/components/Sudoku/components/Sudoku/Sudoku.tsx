@@ -28,6 +28,7 @@ class Sudoku extends BEMComponent {
 			...this.state,
 			currentStateTask: task,
 			history: [],
+			historyNeedWrite: false,
 			keyboardCell: {},
 			keyboardIsOpen: false,
 			taskDefault: task,
@@ -54,10 +55,21 @@ class Sudoku extends BEMComponent {
 		});
 	}
 
+	public historyPush(stateTask: ICell[]) {
+		const historyNeedWrite = _.get(this.state, 'historyNeedWrite', false);
+		if (historyNeedWrite) {
+			const history = _.get(this.state, 'history', []);
+			history.push(stateTask);
+
+			this.setState({
+				...this.state,
+				'history': history
+			})
+		}
+	}
+
 	public setCellValue(cell: ICell) {
-		const history = _.get(this.state, 'history', []);
-		const currentStateTask = _.get(this.state, 'currentStateTask', []);
-		history.push(currentStateTask);
+		const currentStateTask: ICell[] = _.get(this.state, 'currentStateTask', []);
 
 		if (currentStateTask) {
 			const newStateTask = _.map(currentStateTask, (currentCeil: ICell) => {
@@ -71,13 +83,13 @@ class Sudoku extends BEMComponent {
 					return currentCeil;
 				}
 			});
+
 			this.closeKeyboard();
+			this.historyPush(currentStateTask);
 
 			this.setState((state) => {
-				return {...state, 'history': history, currentStateTask: newStateTask}
+				return {...state, currentStateTask: newStateTask}
 			});
-
-
 		}
 	}
 
