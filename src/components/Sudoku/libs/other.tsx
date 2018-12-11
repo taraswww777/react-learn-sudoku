@@ -1,5 +1,5 @@
 import * as _ from 'lodash';
-import {AREA_NUMBERS} from "./constants";
+import {AREA_NUMBERS, LIST_KEYS_KEY_BOARD} from "./constants";
 
 export interface ISplitToRowsAndColl {
 	rows: ICell[][],
@@ -83,4 +83,8 @@ export function genCell(posX: number, posY: number, value: number = 0): ICell {
 		'posY': posY,
 		'value': value,
 	}
+}
+
+export function isKeyNumber(keyVale: string) {
+	return -1 !== LIST_KEYS_KEY_BOARD.indexOf(keyVale)
 }

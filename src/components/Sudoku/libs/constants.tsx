@@ -9,3 +9,6 @@ export const AREA_NUMBERS = {
 	1: {0: 3, 1: 4, 2: 5,},
 	2: {0: 6, 1: 7, 2: 8,},
 };
+
+
+export const LIST_KEYS_KEY_BOARD = ['1', '2', '3', '4', '5', '6', '7', '8', '9', '0'];

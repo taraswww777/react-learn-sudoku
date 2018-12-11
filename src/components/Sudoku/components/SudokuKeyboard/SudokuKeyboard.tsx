@@ -2,6 +2,7 @@ import * as _ from "lodash";
 import * as React from 'react';
 import {BEM, IBEMProps} from "../../../../libs/BEM/BEM";
 import {ICell} from "../../libs";
+import {isKeyNumber} from "../../libs/other";
 import {fnCloseKeyboard, fnSetCellValue} from "../Sudoku/Sudoku";
 import "./SudokuKeyboard.css";
 
@@ -10,21 +11,6 @@ const keys: number[] = [
 ];
 const componentName = 'sudoku-keyboard';
 
-function onClickClose(closeKeyboard: fnCloseKeyboard) {
-	return () => {
-		closeKeyboard()
-	};
-}
-
-function onClickSetValue(newValue: number, cell: ICell, setCellValue: fnSetCellValue) {
-	return () => {
-		setCellValue({
-			...cell,
-			value: newValue
-		});
-	}
-}
-
 interface ISudokuKeyboardProps extends IBEMProps {
 	cell: ICell;
 	keyboardWrongValue?: number | null
@@ -32,37 +18,82 @@ interface ISudokuKeyboardProps extends IBEMProps {
 	setCellValue: fnSetCellValue;
 }
 
-function SudokuKeyboard(props: ISudokuKeyboardProps) {
-	return (
-		<div className={props.block()}>
-			<div className={props.elem('keys')}>
-					<span
-						className={props.elem('close')}
-						onClick={onClickClose(props.closeKeyboard)}>x</span>
-				<div className={props.elem('grid')}>
-					{_.map(keys, (key: number) =>
-						<div
-							key={key}
-							onClick={onClickSetValue(key, props.cell, props.setCellValue)}
-							className={props.joinClasses(
-								props.elem('key'),
-								props.elem('key', props.cell.value === key ? 'current' : ''),
-								props.elem('key', props.keyboardWrongValue === key ? 'wrong' : '')
-							)}
-						>{key}</div>
-					)}
-				</div>
 
-				<div
-					onClick={onClickSetValue(0, props.cell, props.setCellValue)}
-					className={props.joinClasses(
-						props.elem('key'),
-						props.elem('key', props.cell.value === 0 ? 'current' : '')
-					)}>clear
+class SudokuKeyboard extends React.Component <ISudokuKeyboardProps> {
+
+	constructor(props: any) {
+		super(props);
+
+		this.onKeyPressSetValue = this.onKeyPressSetValue.bind(this);
+		this.onClickSetValue = this.onClickSetValue.bind(this);
+		this.onClickClose = this.onClickClose.bind(this);
+	}
+
+	public onKeyPressSetValue(event: any): void {
+		if (isKeyNumber(event.key)) {
+			let keyValue = _.parseInt(event.key);
+
+			this.onClickSetValue(keyValue)();
+		} else if (event.key === 'Escape') {
+			this.props.closeKeyboard();
+		}
+	}
+
+	public onClickSetValue(newValue: number) {
+		return () => {
+			this.props.setCellValue({
+				...this.props.cell,
+				value: newValue
+			});
+		}
+	}
+
+	public onClickClose() {
+		return () => {
+			this.props.closeKeyboard()
+		};
+	}
+
+	public render() {
+		return (
+			<div className={this.props.block()}>
+				<div className={this.props.elem('keys')}>
+					<span
+						className={this.props.elem('close')}
+						onClick={this.onClickClose()}>x</span>
+					<div className={this.props.elem('grid')}>
+						{_.map(keys, (key: number) =>
+							<div
+								key={key}
+								onClick={this.onClickSetValue(key)}
+								className={this.props.joinClasses(
+									this.props.elem('key'),
+									this.props.elem('key', this.props.cell.value === key ? 'current' : ''),
+									this.props.elem('key', this.props.keyboardWrongValue === key ? 'wrong' : '')
+								)}
+							>{key}</div>
+						)}
+					</div>
+
+					<div
+						onClick={this.onClickSetValue(0)}
+						className={this.props.joinClasses(
+							this.props.elem('key'),
+							this.props.elem('key', this.props.cell.value === 0 ? 'current' : '')
+						)}>clear
+					</div>
 				</div>
 			</div>
-		</div>
-	);
+		);
+	}
+
+	public componentDidMount() {
+		window.addEventListener('keyup', this.onKeyPressSetValue);
+	}
+
+	public componentWillUnmount() {
+		window.removeEventListener('keyup', this.onKeyPressSetValue);
+	}
 }
 
 export default BEM(SudokuKeyboard, componentName);
