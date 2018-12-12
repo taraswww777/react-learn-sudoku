@@ -1,7 +1,8 @@
 import * as _ from "lodash";
 import * as React from 'react';
 import BEMComponent from "../../../../libs/BEM/BEMComponent";
-import {genCell, ICell, MAX_POS_X, MAX_POS_Y, MIN_POS_X, MIN_POS_Y, valid} from '../../libs';
+import DEMO_TASK from '../../demo-task.json';
+import {genCell, ICell, valid} from '../../libs';
 import {
 	DIRECTIONS_DRIVING,
 	DIRECTIONS_DRIVING_DOWN,
@@ -9,11 +10,12 @@ import {
 	DIRECTIONS_DRIVING_RIGHT,
 	DIRECTIONS_DRIVING_UP
 } from "../../libs/constants";
-import {driveToHorizontal, driveToVertical} from "../../libs/other";
+import {driveToHorizontal, driveToVertical, genDefaultTask} from "../../libs/other";
 import SudokuBar from "../SudokuBar/SudokuBar";
 import SudokuGrid from "../SudokuGrid/SudokuGrid";
 import SudokuKeyboard from "../SudokuKeyboard/SudokuKeyboard";
 import "./Sudoku.css";
+
 
 export type fnDoOpenKeyboard = (cell: ICell) => void;
 export type fnCloseKeyboard = () => void;
@@ -26,13 +28,8 @@ class Sudoku extends BEMComponent {
 
 		this.componentName = 'sudoku';
 
-		let task: ICell[] = [];
+		const task: ICell[] = DEMO_TASK || genDefaultTask();
 
-		for (let posX = MIN_POS_X; posX <= MAX_POS_X; posX++) {
-			for (let posY = MIN_POS_Y; posY <= MAX_POS_Y; posY++) {
-				task.push(genCell(posX, posY));
-			}
-		}
 
 		this.state = {
 			...this.state,

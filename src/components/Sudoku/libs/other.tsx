@@ -1,16 +1,10 @@
 import * as _ from 'lodash';
 import {AREA_NUMBERS, LIST_KEYS_KEY_BOARD, MAX_POS_X, MAX_POS_Y, MIN_POS_X, MIN_POS_Y} from "./constants";
-
-export interface ISplitToRowsAndColl {
-	rows: ICell[][],
-	cols: ICell[][],
-	area: ICell[][],
-}
+import {ICell, ISplitToRowsAndColl} from "./interfaces";
 
 export function onlyTrue(arrBool: boolean[]): boolean {
 	return _.findIndex(arrBool, item => !item) === -1;
 }
-
 
 export function getNumberAreaByPosXOrY(pos: number): number {
 	if (_.inRange(pos, -1, 3)) {
@@ -22,14 +16,6 @@ export function getNumberAreaByPosXOrY(pos: number): number {
 	}
 	return -1;
 }
-
-export interface ICell {
-	key: string,
-	posX: number,
-	posY: number,
-	value: number | 0,
-}
-
 
 export function getNumberAreaByPos(posX: number, posY: number): number {
 	const areaX = getNumberAreaByPosXOrY(posX);
@@ -84,7 +70,7 @@ export function genCell(posX: number, posY: number, value: number = 0): ICell {
 	}
 }
 
-export function isKeyNumber(keyVale: string) {
+export function isKeyNumber(keyVale: string): boolean {
 	return -1 !== LIST_KEYS_KEY_BOARD.indexOf(keyVale)
 }
 
@@ -128,4 +114,16 @@ export function driveToVertical(cell: ICell, stepSize: 1 | -1 = 1): ICell {
 	}
 
 	return genCell(newPosX, newPosY, cell.value);
+}
+
+export function genDefaultTask(): ICell[] {
+	let task: ICell[] = [];
+
+	for (let posX = MIN_POS_X; posX <= MAX_POS_X; posX++) {
+		for (let posY = MIN_POS_Y; posY <= MAX_POS_Y; posY++) {
+			task.push(genCell(posX, posY));
+		}
+	}
+
+	return task;
 }
