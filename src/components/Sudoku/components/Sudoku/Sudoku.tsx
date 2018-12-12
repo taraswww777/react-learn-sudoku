@@ -2,7 +2,7 @@ import * as _ from "lodash";
 import * as React from 'react';
 import BEMComponent from "../../../../libs/BEM/BEMComponent";
 import DEMO_TASK from '../../demo-task.json';
-import {genCell, ICell, IValidResult, setMain, valid} from '../../libs';
+import {genCell, ICell, IValidResult, setMainCells, valid} from '../../libs';
 import {
 	DIRECTIONS_DRIVING,
 	DIRECTIONS_DRIVING_DOWN,
@@ -53,7 +53,7 @@ class Sudoku extends BEMComponent {
 		this.setCurrentCell = this.setCurrentCell.bind(this);
 		this.changeCurrentCellKey = this.changeCurrentCellKey.bind(this);
 		this.keyUpF2DoOpenKeyboard = this.keyUpF2DoOpenKeyboard.bind(this);
-		this.run = this.run.bind(this);
+		this.fixMainCells = this.fixMainCells.bind(this);
 	}
 
 	public setStateTask(task: ICell[]) {
@@ -79,13 +79,10 @@ class Sudoku extends BEMComponent {
 	}
 
 	public setCurrentCell(cell: ICell) {
-		this.setState((state) => {
-
-			return {
-				...state,
-				currentCell: cell
-			}
-		});
+		this.setState((state) => ({
+			...state,
+			currentCell: cell
+		}));
 	}
 
 	public doOpenKeyboard(cell: ICell) {
@@ -110,11 +107,11 @@ class Sudoku extends BEMComponent {
 	}
 
 	public closeKeyboard() {
-		this.setState({
-			...this.state,
+		this.setState((state) => ({
+			...state,
 			keyboardCell: {},
 			keyboardIsOpen: false,
-		});
+		}));
 	}
 
 	public historyPush(stateTask: ICell[]) {
@@ -122,10 +119,10 @@ class Sudoku extends BEMComponent {
 			const history = _.get(this.state, 'history', []);
 			history.push(stateTask);
 
-			this.setState({
-				...this.state,
+			this.setState((state) => ({
+				...state,
 				'history': history
-			})
+			}));
 		}
 	}
 
@@ -198,9 +195,9 @@ class Sudoku extends BEMComponent {
 		}
 	}
 
-	public run() {
+	public fixMainCells() {
 		const currentStateTask = _.get(this.state, 'currentStateTask');
-		this.setStateTask(setMain(currentStateTask));
+		this.setStateTask(setMainCells(currentStateTask));
 		this.setStateHistoryNeedWrite();
 	}
 
@@ -214,7 +211,7 @@ class Sudoku extends BEMComponent {
 		return (
 			<div className={this.block()}>
 				<div className={this.elem('bar')}>
-					<SudokuBar fnRun={this.run}/>
+					<SudokuBar fixMainCells={this.fixMainCells}/>
 				</div>
 
 				<div className={this.elem('grid')}>

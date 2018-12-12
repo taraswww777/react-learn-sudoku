@@ -5,7 +5,7 @@ import {
 	getNumberAreaByPos,
 	getNumberAreaByPosXOrY, onlyTrue, splitToRowsAndCols
 } from './other';
-import {setMain} from './run';
+import {setMainCells} from './run';
 import {IValidResult, valid, validListCells} from './valid';
 
 export {
@@ -28,6 +28,5 @@ export {
 	MAX_POS_X,
 	MAX_POS_Y,
 	AREA_NUMBERS,
-	// run
-	setMain
+	setMainCells
 }
