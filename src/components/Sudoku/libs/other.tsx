@@ -61,12 +61,16 @@ export function splitToRowsAndCols(stateTask: ICell[]): ISplitToRowsAndColl {
 	return resultSplit;
 }
 
+export function genCellKey(posX: number, posY: number): string {
+	return posX + '-' + posY;
+}
+
 export function genCell(posX: number, posY: number, value: number = 0): ICell {
 	return {
-		'key': posX + '-' + posY,
-		'posX': posX,
-		'posY': posY,
-		'value': value,
+		key: genCellKey(posX, posY),
+		posX,
+		posY,
+		value,
 	}
 }
 
@@ -92,7 +96,7 @@ export function driveToHorizontal(cell: ICell, stepSize: 1 | -1 = 1): ICell {
 		newPosX = MAX_POS_X;
 	}
 
-	return genCell(newPosX, newPosY, cell.value);
+	return genCell(newPosX, newPosY);
 }
 
 export function driveToVertical(cell: ICell, stepSize: 1 | -1 = 1): ICell {
@@ -113,7 +117,7 @@ export function driveToVertical(cell: ICell, stepSize: 1 | -1 = 1): ICell {
 		newPosY = MAX_POS_Y;
 	}
 
-	return genCell(newPosX, newPosY, cell.value);
+	return genCell(newPosX, newPosY);
 }
 
 export function genDefaultTask(): ICell[] {

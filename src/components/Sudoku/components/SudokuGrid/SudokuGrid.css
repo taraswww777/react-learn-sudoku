@@ -31,6 +31,13 @@
 	color: #fff;
 }
 
+.sudoku-grid__cell--is-main {
+	font-weight: bold;
+	background: #cccccc;
+	color: #000;
+	border-color: #000;
+}
+
 [class*="sudoku-grid__cell--pos_0"] {
 	border-top: solid #000;
 }

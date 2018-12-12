@@ -2,7 +2,7 @@ import * as _ from "lodash";
 import * as React from 'react';
 import BEMComponent from "../../../../libs/BEM/BEMComponent";
 import DEMO_TASK from '../../demo-task.json';
-import {genCell, ICell, valid} from '../../libs';
+import {genCell, ICell, IValidResult, setMain, valid} from '../../libs';
 import {
 	DIRECTIONS_DRIVING,
 	DIRECTIONS_DRIVING_DOWN,
@@ -43,12 +43,39 @@ class Sudoku extends BEMComponent {
 			taskDefault: task,
 		};
 
+		this.binder();
+	}
+
+	public binder() {
 		this.doOpenKeyboard = this.doOpenKeyboard.bind(this);
 		this.closeKeyboard = this.closeKeyboard.bind(this);
 		this.setCellValue = this.setCellValue.bind(this);
 		this.setCurrentCell = this.setCurrentCell.bind(this);
 		this.changeCurrentCellKey = this.changeCurrentCellKey.bind(this);
 		this.keyUpF2DoOpenKeyboard = this.keyUpF2DoOpenKeyboard.bind(this);
+		this.run = this.run.bind(this);
+	}
+
+	public setStateTask(task: ICell[]) {
+		const currentStateTask: ICell[] = _.get(this.state, 'currentStateTask', []);
+
+		if (currentStateTask.length) {
+			this.historyPush(currentStateTask);
+
+			this.setState((state) => {
+				return {...state, currentStateTask: task}
+			});
+		}
+	}
+
+	public setStateHistoryNeedWrite(historyNeedWrite: boolean = true) {
+		this.setState((state) => {
+			return {...state, historyNeedWrite}
+		});
+	}
+
+	public getStateHistoryNeedWrite() {
+		return _.get(this.state, 'historyNeedWrite', false);
 	}
 
 	public setCurrentCell(cell: ICell) {
@@ -67,7 +94,7 @@ class Sudoku extends BEMComponent {
 		this.setState((state) => ({
 			...state,
 			keyboardCell: cell,
-			keyboardIsOpen: true,
+			keyboardIsOpen: !cell.isMain,
 			keyboardWrongValue: null,
 		}));
 	}
@@ -91,8 +118,7 @@ class Sudoku extends BEMComponent {
 	}
 
 	public historyPush(stateTask: ICell[]) {
-		const historyNeedWrite = _.get(this.state, 'historyNeedWrite', false);
-		if (historyNeedWrite) {
+		if (this.getStateHistoryNeedWrite()) {
 			const history = _.get(this.state, 'history', []);
 			history.push(stateTask);
 
@@ -106,7 +132,7 @@ class Sudoku extends BEMComponent {
 	public setCellValue(cell: ICell) {
 		const currentStateTask: ICell[] = _.get(this.state, 'currentStateTask', []);
 
-		if (currentStateTask) {
+		if (currentStateTask.length) {
 			const newStateTask = _.map(currentStateTask, (currentCeil: ICell) => {
 				if (currentCeil.key === cell.key) {
 					return {
@@ -118,14 +144,12 @@ class Sudoku extends BEMComponent {
 					return currentCeil;
 				}
 			});
+			const resValid: IValidResult = valid(newStateTask);
 
-			if (valid(newStateTask)) {
+			if (resValid.isValid) {
 				this.closeKeyboard();
-				this.historyPush(currentStateTask);
 
-				this.setState((state) => {
-					return {...state, currentStateTask: newStateTask}
-				});
+				this.setStateTask(newStateTask);
 			} else {
 				this.setState((state) => {
 					return {...state, keyboardWrongValue: cell.value}
@@ -139,7 +163,7 @@ class Sudoku extends BEMComponent {
 			return;
 		}
 		const currentCellKey: string = _.get(this.state, 'currentCell.key', '');
-		const keyboardIsOpen: boolean = _.get(this.state, 'keyboardIsOpen');
+		let keyboardIsOpen: boolean = _.get(this.state, 'keyboardIsOpen');
 
 		this.closeKeyboard();
 
@@ -147,6 +171,8 @@ class Sudoku extends BEMComponent {
 
 		if (currentCellKey.length > 1) {
 			const currentCell: ICell = _.get(this.state, 'currentCell');
+
+			keyboardIsOpen = !currentCell.isMain ? keyboardIsOpen : false;
 
 			switch (event.key) {
 				case DIRECTIONS_DRIVING_RIGHT:
@@ -172,6 +198,12 @@ class Sudoku extends BEMComponent {
 		}
 	}
 
+	public run() {
+		const currentStateTask = _.get(this.state, 'currentStateTask');
+		this.setStateTask(setMain(currentStateTask));
+		this.setStateHistoryNeedWrite();
+	}
+
 	public render() {
 		const currentCellKey = _.get(this.state, 'currentCell.key', '');
 		const keyboardWrongValue = _.get(this.state, 'keyboardWrongValue', null);
@@ -182,7 +214,7 @@ class Sudoku extends BEMComponent {
 		return (
 			<div className={this.block()}>
 				<div className={this.elem('bar')}>
-					<SudokuBar/>
+					<SudokuBar fnRun={this.run}/>
 				</div>
 
 				<div className={this.elem('grid')}>
@@ -202,7 +234,6 @@ class Sudoku extends BEMComponent {
 			</div>
 		);
 	}
-
 
 	public componentDidMount() {
 		window.addEventListener('keydown', this.changeCurrentCellKey);

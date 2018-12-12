@@ -1,23 +1,27 @@
 import * as _ from "lodash";
-import {ICell, onlyTrue, splitToRowsAndCols} from "./index";
+import {ICell, ISplitToRowsAndColl, onlyTrue, splitToRowsAndCols} from "./index";
 
-export function valid(stateTask: ICell[]): boolean {
-	if (stateTask) {
-		const RowsAndCols = splitToRowsAndCols(stateTask);
-
-		if (validListCells(RowsAndCols.rows)) {
-			if (validListCells(RowsAndCols.cols)) {
-				if (validListCells(RowsAndCols.area)) {
-					return true;
-				}
-			}
-		}
-	}
-
-	return false;
+export interface IValidResult {
+	isValid: boolean;
+	ceilHasWrong?: ICell[];
 }
 
-export function validListCells(arrRowsTasks: ICell[][]): boolean {
+export function valid(stateTask: ICell[]): IValidResult {
+	let validResult: IValidResult = {isValid: false};
+	if (stateTask) {
+		const RowsAndCols: ISplitToRowsAndColl = splitToRowsAndCols(stateTask);
+
+		let resValidRows: boolean[] = validListCells(RowsAndCols.rows);
+		let resValidCols: boolean[] = validListCells(RowsAndCols.cols);
+		let resValidArea: boolean[] = validListCells(RowsAndCols.area);
+
+		validResult.isValid = onlyTrue(resValidRows) && onlyTrue(resValidCols) && onlyTrue(resValidArea);
+	}
+
+	return validResult;
+}
+
+export function validListCells(arrRowsTasks: ICell[][]): boolean[] {
 	let isValidSteps: boolean[] = [];
 
 	if (arrRowsTasks) {
@@ -31,5 +35,5 @@ export function validListCells(arrRowsTasks: ICell[][]): boolean {
 		});
 	}
 
-	return onlyTrue(isValidSteps);
+	return isValidSteps;
 }

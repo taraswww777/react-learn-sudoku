@@ -25,7 +25,8 @@ function SudokuGrid(props: ISudokuGridProps) {
 					key={cell.key}
 					className={props.joinClasses(
 						props.elem('cell', 'pos', cell.key),
-						props.elem('cell', currentCellKey === cell.key ? 'current' : '')
+						props.elem('cell', currentCellKey === cell.key ? 'current' : ''),
+						props.elem('cell', cell.isMain ? 'is-main' : '')
 					)}>
 					<SudokuCell
 						openKeyboard={props.doOpenKeyboard}

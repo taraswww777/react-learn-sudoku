@@ -11,7 +11,11 @@ export interface ISudokuBarProps extends IBEMProps {
 function SudokuBar(props: ISudokuBarProps) {
 	return (
 		<div className={props.block()}>
-			<button className={props.elem('btn', 'run')}>RUN</button>
+			<button
+				className={props.elem('btn', 'run')}
+				onClick={props.fnRun}
+			>RUN
+			</button>
 		</div>
 	);
 }

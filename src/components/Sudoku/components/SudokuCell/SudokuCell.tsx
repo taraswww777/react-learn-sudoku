@@ -20,7 +20,9 @@ function onClickOpenKeyboard(cell: ICell, openKeyboard: fnDoOpenKeyboard) {
 
 function SudokuCell(props: ISudokuCellProps) {
 	return (
-		<div className={props.block()} onClick={onClickOpenKeyboard(props.cell, props.openKeyboard)}>
+		<div
+			className={props.block()}
+			onClick={onClickOpenKeyboard(props.cell, props.openKeyboard)}>
 			{props.cell.value ? props.cell.value : ''}
 		</div>
 	);

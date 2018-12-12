@@ -3,6 +3,8 @@ export interface ICell {
 	posX: number,
 	posY: number,
 	value: number | 0,
+	isMain?: boolean,
+	hasWrong?: boolean,
 }
 
 export interface ISplitToRowsAndColl {
