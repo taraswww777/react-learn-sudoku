@@ -2,11 +2,20 @@ import * as _ from "lodash";
 import * as React from 'react';
 import BEMComponent from "../../../../libs/BEM/BEMComponent";
 import {genCell, ICell, MAX_POS_X, MAX_POS_Y, MIN_POS_X, MIN_POS_Y, valid} from '../../libs';
-import SudokuCell from "../SudokuCell/SudokuCell";
+import {
+	DIRECTIONS_DRIVING,
+	DIRECTIONS_DRIVING_DOWN,
+	DIRECTIONS_DRIVING_LEFT,
+	DIRECTIONS_DRIVING_RIGHT,
+	DIRECTIONS_DRIVING_UP
+} from "../../libs/constants";
+import {driveToHorizontal, driveToVertical} from "../../libs/other";
+import SudokuBar from "../SudokuBar/SudokuBar";
+import SudokuGrid from "../SudokuGrid/SudokuGrid";
 import SudokuKeyboard from "../SudokuKeyboard/SudokuKeyboard";
 import "./Sudoku.css";
 
-export type fnOpenKeyboard = (cell: ICell) => void;
+export type fnDoOpenKeyboard = (cell: ICell) => void;
 export type fnCloseKeyboard = () => void;
 export type fnSetCellValue = (cell: ICell) => void;
 
@@ -19,8 +28,8 @@ class Sudoku extends BEMComponent {
 
 		let task: ICell[] = [];
 
-		for (let posX = MIN_POS_X; posX < MAX_POS_X; posX++) {
-			for (let posY = MIN_POS_Y; posY < MAX_POS_Y; posY++) {
+		for (let posX = MIN_POS_X; posX <= MAX_POS_X; posX++) {
+			for (let posY = MIN_POS_Y; posY <= MAX_POS_Y; posY++) {
 				task.push(genCell(posX, posY));
 			}
 		}
@@ -37,10 +46,12 @@ class Sudoku extends BEMComponent {
 			taskDefault: task,
 		};
 
-		this.openKeyboard = this.openKeyboard.bind(this);
+		this.doOpenKeyboard = this.doOpenKeyboard.bind(this);
 		this.closeKeyboard = this.closeKeyboard.bind(this);
 		this.setCellValue = this.setCellValue.bind(this);
 		this.setCurrentCell = this.setCurrentCell.bind(this);
+		this.changeCurrentCellKey = this.changeCurrentCellKey.bind(this);
+		this.keyUpF2DoOpenKeyboard = this.keyUpF2DoOpenKeyboard.bind(this);
 	}
 
 	public setCurrentCell(cell: ICell) {
@@ -53,7 +64,7 @@ class Sudoku extends BEMComponent {
 		});
 	}
 
-	public openKeyboard(cell: ICell) {
+	public doOpenKeyboard(cell: ICell) {
 		this.setCurrentCell(cell);
 
 		this.setState((state) => ({
@@ -62,6 +73,16 @@ class Sudoku extends BEMComponent {
 			keyboardIsOpen: true,
 			keyboardWrongValue: null,
 		}));
+	}
+
+	public keyUpF2DoOpenKeyboard(event: any) {
+		if (event.key === 'F2') {
+			const currentCellKey: string = _.get(this.state, 'currentCell.key', '');
+			if (currentCellKey) {
+				const currentCell: ICell = _.get(this.state, 'currentCell');
+				this.doOpenKeyboard(currentCell);
+			}
+		}
 	}
 
 	public closeKeyboard() {
@@ -116,6 +137,44 @@ class Sudoku extends BEMComponent {
 		}
 	}
 
+	public changeCurrentCellKey(event: any) {
+		if (DIRECTIONS_DRIVING.indexOf(event.key) === -1) {
+			return;
+		}
+		const currentCellKey: string = _.get(this.state, 'currentCell.key', '');
+		const keyboardIsOpen: boolean = _.get(this.state, 'keyboardIsOpen');
+
+		this.closeKeyboard();
+
+		let newCurrentCell: ICell = genCell(0, 0, 0);
+
+		if (currentCellKey.length > 1) {
+			const currentCell: ICell = _.get(this.state, 'currentCell');
+
+			switch (event.key) {
+				case DIRECTIONS_DRIVING_RIGHT:
+					newCurrentCell = driveToHorizontal(currentCell);
+					break;
+				case DIRECTIONS_DRIVING_LEFT:
+					newCurrentCell = driveToHorizontal(currentCell, -1);
+					break;
+
+				case DIRECTIONS_DRIVING_UP:
+					newCurrentCell = driveToVertical(currentCell, -1);
+					break;
+				case DIRECTIONS_DRIVING_DOWN:
+					newCurrentCell = driveToVertical(currentCell);
+					break;
+			}
+		}
+
+		this.setCurrentCell(newCurrentCell);
+
+		if (keyboardIsOpen) {
+			this.doOpenKeyboard(newCurrentCell);
+		}
+	}
+
 	public render() {
 		const currentCellKey = _.get(this.state, 'currentCell.key', '');
 		const keyboardWrongValue = _.get(this.state, 'keyboardWrongValue', null);
@@ -125,20 +184,17 @@ class Sudoku extends BEMComponent {
 
 		return (
 			<div className={this.block()}>
-				{currentStateTask && <div className={this.elem('grid')}>
-					{_.map(currentStateTask, (cell: ICell) => <div
-							className={this.joinClasses(
-								this.elem('cell', 'pos', cell.key),
-								this.elem('cell', currentCellKey === cell.key ? 'current' : '')
-							)
-							}
-							key={cell.key}>
-							<SudokuCell
-								openKeyboard={this.openKeyboard}
-								cell={cell}/>
-						</div>
-					)}
-				</div>}
+				<div className={this.elem('bar')}>
+					<SudokuBar/>
+				</div>
+
+				<div className={this.elem('grid')}>
+					<SudokuGrid
+						currentCellKey={currentCellKey}
+						currentStateTask={currentStateTask}
+						doOpenKeyboard={this.doOpenKeyboard}
+					/>
+				</div>
 
 				{keyboardIsOpen && keyboardCell && <SudokuKeyboard
 					cell={keyboardCell}
@@ -148,6 +204,17 @@ class Sudoku extends BEMComponent {
 				/>}
 			</div>
 		);
+	}
+
+
+	public componentDidMount() {
+		window.addEventListener('keydown', this.changeCurrentCellKey);
+		window.addEventListener('keyup', this.keyUpF2DoOpenKeyboard);
+	}
+
+	public componentWillUnmount() {
+		window.removeEventListener('keydown', this.changeCurrentCellKey);
+		window.addEventListener('keyup', this.keyUpF2DoOpenKeyboard);
 	}
 }
 

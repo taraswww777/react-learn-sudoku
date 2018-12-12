@@ -1,17 +1,17 @@
 import * as React from 'react';
 import {BEM, IBEMProps} from "../../../../libs/BEM/BEM";
 import {ICell} from "../../libs";
-import {fnOpenKeyboard} from "../Sudoku/Sudoku";
+import {fnDoOpenKeyboard} from "../Sudoku/Sudoku";
 import "./SudokuCell.css";
 
 export interface ISudokuCellProps extends IBEMProps {
 	cell: ICell;
-	openKeyboard: fnOpenKeyboard
+	openKeyboard: fnDoOpenKeyboard
 }
 
 const componentName = 'sudoku-cell';
 
-function onClickOpenKeyboard(cell: ICell, openKeyboard: fnOpenKeyboard) {
+function onClickOpenKeyboard(cell: ICell, openKeyboard: fnDoOpenKeyboard) {
 	return () => {
 		openKeyboard(cell);
 	}

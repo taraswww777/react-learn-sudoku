@@ -1,0 +1,41 @@
+.sudoku-bar {
+	width: 100%;
+	display: flex;
+	flex-wrap: wrap;
+}
+
+.sudoku-bar__btn {
+	padding: 10px;
+	margin: 0 5px 0 0;
+	font-weight: bold;
+	font-size: 14px;
+	border-width: 1px;
+	cursor: pointer;
+	text-transform: uppercase;
+}
+
+.sudoku-bar__btn--run {
+	background: green;
+	border: 2px solid rgba(0, 128, 0, 0.5);
+	color: #fff;
+}
+
+.sudoku-bar__btn--run:hover {
+	animation: 0.25s sudoku-bar__btn--run---hover linear;
+	transform: scale(0.95);
+}
+
+
+@keyframes sudoku-bar__btn--run---hover {
+	from{
+		transform: scale(1);
+	}
+
+	50%{
+		transform: scale(0.9);
+	}
+
+	to{
+		transform: scale(0.95);
+	}
+}

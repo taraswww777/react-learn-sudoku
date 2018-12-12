@@ -1,0 +1,73 @@
+.sudoku-grid {
+	display: grid;
+	width: 360px;
+	height: 360px;
+	margin: 0 auto;
+	grid: 40px 40px 40px 40px 40px 40px 40px 40px 40px
+				/
+				40px 40px 40px 40px 40px 40px 40px 40px 40px;
+
+}
+
+.sudoku-grid__cell {
+	transition: 0.1s linear;
+	border: 1px dotted #ccc;
+	cursor: pointer;
+	color: #000;
+	display: flex;
+	align-items: center;
+	align-content: center;
+	justify-content: center;
+}
+
+.sudoku-grid__cell--current {
+	background: rgba(135, 206, 235, 0.5);
+	border: red 1px solid;
+}
+
+.sudoku-grid__cell:hover {
+	transition: 0.25s linear;
+	background: rgba(0, 0, 0, 0.5);
+	color: #fff;
+}
+
+[class*="sudoku-grid__cell--pos_0"] {
+	border-top: solid #000;
+}
+
+.sudoku-grid__cell--pos_2-0, .sudoku-grid__cell--pos_5-0,
+.sudoku-grid__cell--pos_2-1, .sudoku-grid__cell--pos_5-1,
+.sudoku-grid__cell--pos_2-2, .sudoku-grid__cell--pos_5-2,
+.sudoku-grid__cell--pos_2-3, .sudoku-grid__cell--pos_5-3,
+.sudoku-grid__cell--pos_2-4, .sudoku-grid__cell--pos_5-4,
+.sudoku-grid__cell--pos_2-5, .sudoku-grid__cell--pos_5-5,
+.sudoku-grid__cell--pos_2-6, .sudoku-grid__cell--pos_5-6,
+.sudoku-grid__cell--pos_2-7, .sudoku-grid__cell--pos_5-7,
+.sudoku-grid__cell--pos_2-8, .sudoku-grid__cell--pos_5-8,
+[class*="sudoku-grid__cell--pos_8"] {
+	border-bottom: solid #000;
+}
+
+.sudoku-grid__cell--pos_0-0, .sudoku-grid__cell--pos_0-6, .sudoku-grid__cell--pos_0-3,
+.sudoku-grid__cell--pos_1-0, .sudoku-grid__cell--pos_1-6, .sudoku-grid__cell--pos_1-3,
+.sudoku-grid__cell--pos_2-0, .sudoku-grid__cell--pos_2-6, .sudoku-grid__cell--pos_2-3,
+.sudoku-grid__cell--pos_3-0, .sudoku-grid__cell--pos_3-6, .sudoku-grid__cell--pos_3-3,
+.sudoku-grid__cell--pos_4-0, .sudoku-grid__cell--pos_4-6, .sudoku-grid__cell--pos_4-3,
+.sudoku-grid__cell--pos_5-0, .sudoku-grid__cell--pos_5-6, .sudoku-grid__cell--pos_5-3,
+.sudoku-grid__cell--pos_6-0, .sudoku-grid__cell--pos_6-6, .sudoku-grid__cell--pos_6-3,
+.sudoku-grid__cell--pos_7-0, .sudoku-grid__cell--pos_7-6, .sudoku-grid__cell--pos_7-3,
+.sudoku-grid__cell--pos_8-0, .sudoku-grid__cell--pos_8-6, .sudoku-grid__cell--pos_8-3 {
+	border-left: solid #000;
+}
+
+.sudoku-grid__cell--pos_0-8,
+.sudoku-grid__cell--pos_1-8,
+.sudoku-grid__cell--pos_2-8,
+.sudoku-grid__cell--pos_3-8,
+.sudoku-grid__cell--pos_4-8,
+.sudoku-grid__cell--pos_5-8,
+.sudoku-grid__cell--pos_6-8,
+.sudoku-grid__cell--pos_7-8,
+.sudoku-grid__cell--pos_8-8 {
+	border-right: solid #000;
+}

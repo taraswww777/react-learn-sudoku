@@ -2,16 +2,19 @@ import * as _ from "lodash";
 import {ICell, onlyTrue, splitToRowsAndCols} from "./index";
 
 export function valid(stateTask: ICell[]): boolean {
-
-	let isValidSteps: boolean[] = [];
-
 	if (stateTask) {
 		const RowsAndCols = splitToRowsAndCols(stateTask);
-		isValidSteps.push(validListCells(RowsAndCols.rows));
-		isValidSteps.push(validListCells(RowsAndCols.cols));
-		isValidSteps.push(validListCells(RowsAndCols.area));
+
+		if (validListCells(RowsAndCols.rows)) {
+			if (validListCells(RowsAndCols.cols)) {
+				if (validListCells(RowsAndCols.area)) {
+					return true;
+				}
+			}
+		}
 	}
-	return onlyTrue(isValidSteps);
+
+	return false;
 }
 
 export function validListCells(arrRowsTasks: ICell[][]): boolean {

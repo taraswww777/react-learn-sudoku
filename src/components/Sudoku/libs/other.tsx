@@ -1,5 +1,5 @@
 import * as _ from 'lodash';
-import {AREA_NUMBERS, LIST_KEYS_KEY_BOARD} from "./constants";
+import {AREA_NUMBERS, LIST_KEYS_KEY_BOARD, MAX_POS_X, MAX_POS_Y, MIN_POS_X, MIN_POS_Y} from "./constants";
 
 export interface ISplitToRowsAndColl {
 	rows: ICell[][],
@@ -37,7 +37,6 @@ export function getNumberAreaByPos(posX: number, posY: number): number {
 
 	return _.get(AREA_NUMBERS, `${areaX}.${areaY}`);
 }
-
 
 export function splitToRowsAndCols(stateTask: ICell[]): ISplitToRowsAndColl {
 	let areaNum: number;
@@ -87,4 +86,46 @@ export function genCell(posX: number, posY: number, value: number = 0): ICell {
 
 export function isKeyNumber(keyVale: string) {
 	return -1 !== LIST_KEYS_KEY_BOARD.indexOf(keyVale)
+}
+
+export function driveToHorizontal(cell: ICell, stepSize: 1 | -1 = 1): ICell {
+	let newPosY = cell.posY + stepSize;
+	let newPosX = cell.posX;
+
+	if (newPosY > MAX_POS_Y) {
+		newPosY = MIN_POS_Y;
+		newPosX += stepSize;
+	} else if (newPosY < MIN_POS_Y) {
+		newPosY = MAX_POS_Y;
+		newPosX += stepSize;
+	}
+
+	if (newPosX > MAX_POS_X) {
+		newPosX = MIN_POS_X;
+	} else if (newPosX < MIN_POS_X) {
+		newPosX = MAX_POS_X;
+	}
+
+	return genCell(newPosX, newPosY, cell.value);
+}
+
+export function driveToVertical(cell: ICell, stepSize: 1 | -1 = 1): ICell {
+	let newPosY = cell.posY;
+	let newPosX = cell.posX + stepSize;
+
+	if (newPosX > MAX_POS_X) {
+		newPosX = MIN_POS_X;
+		newPosY += stepSize;
+	} else if (newPosX < MIN_POS_X) {
+		newPosX = MAX_POS_X;
+		newPosY += stepSize;
+	}
+
+	if (newPosY > MAX_POS_Y) {
+		newPosY = MIN_POS_Y;
+	} else if (newPosY < MIN_POS_Y) {
+		newPosY = MAX_POS_Y;
+	}
+
+	return genCell(newPosX, newPosY, cell.value);
 }
