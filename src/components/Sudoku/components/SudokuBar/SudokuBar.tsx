@@ -5,7 +5,8 @@ import "./SudokuBar.css";
 const COMPONENT_NAME = 'sudoku-bar';
 
 export interface ISudokuBarProps extends IBEMProps {
-	fixMainCells?: any
+	fixMainCells: any;
+	setHints?: any;
 }
 
 function SudokuBar(props: ISudokuBarProps) {
@@ -14,7 +15,13 @@ function SudokuBar(props: ISudokuBarProps) {
 			<button
 				className={props.elem('btn', 'run')}
 				onClick={props.fixMainCells}
-			>fixMainCells
+			>fix Main Cells
+			</button>
+
+			<button
+				className={props.elem('btn', 'run')}
+				onClick={props.setHints}
+			>set Hints
 			</button>
 		</div>
 	);

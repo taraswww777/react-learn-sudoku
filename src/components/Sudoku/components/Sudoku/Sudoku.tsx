@@ -2,7 +2,11 @@ import * as _ from "lodash";
 import * as React from 'react';
 import BEMComponent from "../../../../libs/BEM/BEMComponent";
 import DEMO_TASK from '../../demo-task.json';
-import {genCell, ICell, IValidResult, setMainCells, valid} from '../../libs';
+import {
+	calcHintsToTask, driveToHorizontal,
+	driveToVertical, genCell, genDefaultTask, ICell,
+	IValidResult, setMainCells, valid
+} from '../../libs';
 import {
 	DIRECTIONS_DRIVING,
 	DIRECTIONS_DRIVING_DOWN,
@@ -10,7 +14,6 @@ import {
 	DIRECTIONS_DRIVING_RIGHT,
 	DIRECTIONS_DRIVING_UP
 } from "../../libs/constants";
-import {driveToHorizontal, driveToVertical, genDefaultTask} from "../../libs/other";
 import SudokuBar from "../SudokuBar/SudokuBar";
 import SudokuGrid from "../SudokuGrid/SudokuGrid";
 import SudokuKeyboard from "../SudokuKeyboard/SudokuKeyboard";
@@ -54,6 +57,7 @@ class Sudoku extends BEMComponent {
 		this.changeCurrentCellKey = this.changeCurrentCellKey.bind(this);
 		this.keyUpF2DoOpenKeyboard = this.keyUpF2DoOpenKeyboard.bind(this);
 		this.fixMainCells = this.fixMainCells.bind(this);
+		this.setHints = this.setHints.bind(this);
 	}
 
 	public setStateTask(task: ICell[]) {
@@ -201,6 +205,11 @@ class Sudoku extends BEMComponent {
 		this.setStateHistoryNeedWrite();
 	}
 
+	public setHints() {
+		const currentStateTask: ICell[] = _.get(this.state, 'currentStateTask');
+		this.setStateTask(calcHintsToTask(currentStateTask));
+	}
+
 	public render() {
 		const currentCellKey = _.get(this.state, 'currentCell.key', '');
 		const keyboardWrongValue = _.get(this.state, 'keyboardWrongValue', null);
@@ -211,7 +220,9 @@ class Sudoku extends BEMComponent {
 		return (
 			<div className={this.block()}>
 				<div className={this.elem('bar')}>
-					<SudokuBar fixMainCells={this.fixMainCells}/>
+					<SudokuBar
+						setHints={this.setHints}
+						fixMainCells={this.fixMainCells}/>
 				</div>
 
 				<div className={this.elem('grid')}>

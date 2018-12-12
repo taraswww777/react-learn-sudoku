@@ -1,6 +1,6 @@
 import * as _ from 'lodash';
 import {AREA_NUMBERS, LIST_KEYS_KEY_BOARD, MAX_POS_X, MAX_POS_Y, MIN_POS_X, MIN_POS_Y} from "./constants";
-import {ICell, ISplitToRowsAndColl} from "./interfaces";
+import {ICell, ISplitToRowsColsAreas} from "./interfaces";
 
 export function onlyTrue(arrBool: boolean[]): boolean {
 	return _.findIndex(arrBool, item => !item) === -1;
@@ -24,9 +24,9 @@ export function getNumberAreaByPos(posX: number, posY: number): number {
 	return _.get(AREA_NUMBERS, `${areaX}.${areaY}`);
 }
 
-export function splitToRowsAndCols(stateTask: ICell[]): ISplitToRowsAndColl {
+export function splitToRowsColsAreas(stateTask: ICell[]): ISplitToRowsColsAreas {
 	let areaNum: number;
-	const resultSplit: ISplitToRowsAndColl = {
+	const resultSplit: ISplitToRowsColsAreas = {
 		area: [],
 		cols: [],
 		rows: [],

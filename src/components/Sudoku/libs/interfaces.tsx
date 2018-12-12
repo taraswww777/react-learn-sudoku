@@ -5,9 +5,10 @@ export interface ICell {
 	value: number | 0,
 	isMain?: boolean,
 	hasWrong?: boolean,
+	hints?: number[]
 }
 
-export interface ISplitToRowsAndColl {
+export interface ISplitToRowsColsAreas {
 	rows: ICell[][],
 	cols: ICell[][],
 	area: ICell[][],

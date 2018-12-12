@@ -4,6 +4,9 @@ export const MIN_POS_Y = 0;
 export const MAX_POS_X = 8;
 export const MAX_POS_Y = 8;
 
+export const MIN_VALUE = 1;
+export const MAX_VALUE = 9;
+
 export const AREA_NUMBERS = {
 	0: {0: 0, 1: 1, 2: 2,},
 	1: {0: 3, 1: 4, 2: 5,},

@@ -1,0 +1,58 @@
+.sudoku-cell-hints {
+	width: calc(100% - 8px);
+	height: calc(100% - 8px);
+	margin: 0 auto;
+	display: block;
+	padding: 4px;
+	font-size: 10px;
+	position: relative;
+}
+
+.sudoku-cell-hints__item {
+	position: absolute;
+}
+
+.sudoku-cell-hints__item--val {
+}
+
+.sudoku-cell-hints__item--val_1,
+.sudoku-cell-hints__item--val_2,
+.sudoku-cell-hints__item--val_3 {
+	top: 0;
+}
+
+.sudoku-cell-hints__item--val_4,
+.sudoku-cell-hints__item--val_5,
+.sudoku-cell-hints__item--val_6 {
+	top: 50%;
+	transform: translateY(-50%);
+}
+
+.sudoku-cell-hints__item--val_7,
+.sudoku-cell-hints__item--val_8,
+.sudoku-cell-hints__item--val_9 {
+	bottom: 0;
+}
+
+.sudoku-cell-hints__item--val_1,
+.sudoku-cell-hints__item--val_4,
+.sudoku-cell-hints__item--val_7 {
+	left: 0;
+}
+
+.sudoku-cell-hints__item--val_2,
+.sudoku-cell-hints__item--val_5,
+.sudoku-cell-hints__item--val_8 {
+	left: 50%;
+	transform: translateX(-50%);
+}
+
+.sudoku-cell-hints__item--val_3,
+.sudoku-cell-hints__item--val_6,
+.sudoku-cell-hints__item--val_9 {
+	right: 0;
+}
+
+.sudoku-cell-hints__item--val_5 {
+	transform: translateY(-50%) translateX(-50%);
+}

@@ -1,5 +1,5 @@
 import * as _ from "lodash";
-import {ICell, ISplitToRowsAndColl, onlyTrue, splitToRowsAndCols} from "./index";
+import {ICell, ISplitToRowsColsAreas, onlyTrue, splitToRowsColsAreas} from "./index";
 
 export interface IValidResult {
 	isValid: boolean;
@@ -9,7 +9,7 @@ export interface IValidResult {
 export function valid(stateTask: ICell[]): IValidResult {
 	let validResult: IValidResult = {isValid: false};
 	if (stateTask) {
-		const RowsAndCols: ISplitToRowsAndColl = splitToRowsAndCols(stateTask);
+		const RowsAndCols: ISplitToRowsColsAreas = splitToRowsColsAreas(stateTask);
 
 		let resValidRows: boolean[] = validListCells(RowsAndCols.rows);
 		let resValidCols: boolean[] = validListCells(RowsAndCols.cols);
