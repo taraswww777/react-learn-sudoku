@@ -58,13 +58,14 @@
 	color: #fff;
 }
 
-.sudoku-keyboard__key--current{
-	background: #cccccc;
+.sudoku-keyboard__key--current {
+	background: rgba(0, 255, 0, 0.5);
 }
 
-.sudoku-keyboard__key--wrong{
+.sudoku-keyboard__key--wrong {
 	background: rgba(255, 0, 0, 0.5);
 }
+
 .sudoku-keyboard__key--wrong:hover {
 	transition: 0.25s linear;
 	background: rgba(255, 0, 0, 0.8);
@@ -73,4 +74,17 @@
 
 .sudoku-keyboard__key--clear {
 
+}
+
+.sudoku-keyboard__key--off {
+	background: #cccccc;
+	color: red;
+	border-color: black;
+	cursor: pointer;
+	pointer-events: none;
+}
+
+.sudoku-keyboard__key--off:hover {
+	transition: 0.25s linear;
+	font-weight: bold;
 }

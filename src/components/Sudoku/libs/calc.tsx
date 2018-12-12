@@ -35,7 +35,7 @@ export function calcHintsToTask(task: ICell[]) {
 }
 
 
-function hasValueInRowsColsAreas(rowsColsAreas: ISplitToRowsColsAreas, cell: ICell, value: number): boolean {
+export function hasValueInRowsColsAreas(rowsColsAreas: ISplitToRowsColsAreas, cell: ICell, value: number): boolean {
 	const areaNum = getNumberAreaByPos(cell.posX, cell.posY);
 
 	let resValidRows: boolean = hasValueInArray(rowsColsAreas.rows[cell.posX], value);
@@ -45,7 +45,7 @@ function hasValueInRowsColsAreas(rowsColsAreas: ISplitToRowsColsAreas, cell: ICe
 	return resValidRows || resValidCols || resValidArea;
 }
 
-function hasValueInArray(rowsColsAreas: ICell[], value: number): boolean {
+export function hasValueInArray(rowsColsAreas: ICell[], value: number): boolean {
 	let i = 0;
 
 	for (i; i < rowsColsAreas.length; i++) {
@@ -55,4 +55,9 @@ function hasValueInArray(rowsColsAreas: ICell[], value: number): boolean {
 	}
 
 	return false;
+}
+
+
+export function hasValueInHints(cell: ICell, value: number): boolean {
+	return _.indexOf(cell.hints, value) !== -1;
 }

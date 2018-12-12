@@ -1,7 +1,7 @@
 import * as _ from "lodash";
 import * as React from 'react';
 import {BEM, IBEMProps} from "../../../../libs/BEM/BEM";
-import {ICell} from "../../libs";
+import {hasValueInHints, ICell} from "../../libs";
 import {isKeyNumber} from "../../libs/other";
 import {fnCloseKeyboard, fnSetCellValue} from "../Sudoku/Sudoku";
 import "./SudokuKeyboard.css";
@@ -62,17 +62,24 @@ class SudokuKeyboard extends React.Component <ISudokuKeyboardProps> {
 						className={this.props.elem('close')}
 						onClick={this.onClickClose()}>x</span>
 					<div className={this.props.elem('grid')}>
-						{_.map(keys, (key: number) =>
-							<div
+						{_.map(keys, (key: number) => {
+							let isOff = false;
+
+							if (this.props.cell.hints) {
+								isOff = !hasValueInHints(this.props.cell, key);
+							}
+
+							return (<div
 								key={key}
 								onClick={this.onClickSetValue(key)}
 								className={this.props.joinClasses(
 									this.props.elem('key'),
 									this.props.elem('key', this.props.cell.value === key ? 'current' : ''),
+									this.props.elem('key', isOff ? 'off' : ''),
 									this.props.elem('key', this.props.keyboardWrongValue === key ? 'wrong' : '')
 								)}
-							>{key}</div>
-						)}
+							>{key}</div>);
+						})}
 					</div>
 
 					<div

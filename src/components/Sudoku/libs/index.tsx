@@ -1,15 +1,18 @@
 import {
+	calcHintsToTask, hasValueInArray,
+	hasValueInHints, hasValueInRowsColsAreas, setMainCells
+} from './calc';
+import {
 	AREA_NUMBERS,
 	MAX_POS_X, MAX_POS_Y, MAX_VALUE,
 	MIN_POS_X, MIN_POS_Y, MIN_VALUE
 } from './constants';
 import {ICell, ISplitToRowsColsAreas} from './interfaces';
 import {
-	driveToHorizontal, driveToVertical,
-	genCell,
-	genCellKey, genDefaultTask, getNumberAreaByPos, getNumberAreaByPosXOrY, onlyTrue, splitToRowsColsAreas
+	driveToHorizontal, driveToVertical, genCell,
+	genCellKey, genDefaultTask, getNumberAreaByPos,
+	getNumberAreaByPosXOrY, onlyTrue, splitToRowsColsAreas
 } from './other';
-import {calcHintsToTask, setMainCells} from './run';
 import {IValidResult, valid, validListCells} from './valid';
 
 export {
@@ -39,5 +42,8 @@ export {
 	MAX_VALUE,
 	// run
 	calcHintsToTask,
-	setMainCells
+	setMainCells,
+	hasValueInRowsColsAreas,
+	hasValueInHints,
+	hasValueInArray,
 }
