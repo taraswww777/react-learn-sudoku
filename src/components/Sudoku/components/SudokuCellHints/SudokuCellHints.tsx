@@ -14,7 +14,9 @@ function SudokuCellHints(props: ISudokuCellProps) {
 	return (
 		<div className={props.block()}>
 			{_.map(props.hints, (hint: number) =>
-				<div className={props.elem('item', 'val', hint.toString())}>{hint}</div>
+				<div
+					key={hint}
+					className={props.elem('item', 'val', hint.toString())}>{hint}</div>
 			)}
 		</div>
 	);
