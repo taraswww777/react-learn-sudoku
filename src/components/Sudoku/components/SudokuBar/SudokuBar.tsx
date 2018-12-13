@@ -7,6 +7,7 @@ const COMPONENT_NAME = 'sudoku-bar';
 export interface ISudokuBarProps extends IBEMProps {
 	fixMainCells: any;
 	setHints?: any;
+	calc?: any;
 }
 
 function SudokuBar(props: ISudokuBarProps) {
@@ -22,6 +23,12 @@ function SudokuBar(props: ISudokuBarProps) {
 				className={props.elem('btn', 'run')}
 				onClick={props.setHints}
 			>set Hints
+			</button>
+
+			<button
+				className={props.elem('btn', 'calc')}
+				onClick={props.calc}
+			>calc
 			</button>
 		</div>
 	);

@@ -58,6 +58,7 @@ class Sudoku extends BEMComponent {
 		this.keyUpF2DoOpenKeyboard = this.keyUpF2DoOpenKeyboard.bind(this);
 		this.fixMainCells = this.fixMainCells.bind(this);
 		this.setHints = this.setHints.bind(this);
+		this.calc = this.calc.bind(this);
 	}
 
 	public setStateTask(task: ICell[]) {
@@ -210,6 +211,10 @@ class Sudoku extends BEMComponent {
 		this.setStateTask(calcHintsToTask(currentStateTask));
 	}
 
+	public calc(){
+		console.log('calc');
+	}
+
 	public render() {
 		const currentCellKey = _.get(this.state, 'currentCell.key', '');
 		const keyboardWrongValue = _.get(this.state, 'keyboardWrongValue', null);
@@ -222,6 +227,7 @@ class Sudoku extends BEMComponent {
 				<div className={this.elem('bar')}>
 					<SudokuBar
 						setHints={this.setHints}
+						calc={this.calc}
 						fixMainCells={this.fixMainCells}/>
 				</div>
 
