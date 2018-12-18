@@ -3,16 +3,17 @@ import * as React from 'react';
 import BEMComponent from "../../../../libs/BEM/BEMComponent";
 import DEMO_TASK from '../../demo-task.json';
 import {
+	calcCell,
 	calcHintsToTask, driveToHorizontal,
 	driveToVertical, genCell, genDefaultTask, ICell,
-	IValidResult, setMainCells, valid
+	IValidResult, setMainCells, updateCellInArray, valid
 } from '../../libs';
 import {
 	DIRECTIONS_DRIVING,
 	DIRECTIONS_DRIVING_DOWN,
 	DIRECTIONS_DRIVING_LEFT,
 	DIRECTIONS_DRIVING_RIGHT,
-	DIRECTIONS_DRIVING_UP
+	DIRECTIONS_DRIVING_UP, STEPS_LIVE_CIRCLE
 } from "../../libs/constants";
 import SudokuBar from "../SudokuBar/SudokuBar";
 import SudokuGrid from "../SudokuGrid/SudokuGrid";
@@ -43,6 +44,7 @@ class Sudoku extends BEMComponent {
 			keyboardCell: {},
 			keyboardIsOpen: false,
 			keyboardWrongValue: null,
+			stepLiveCircle: STEPS_LIVE_CIRCLE.INITIAL,
 			taskDefault: task,
 		};
 
@@ -71,6 +73,12 @@ class Sudoku extends BEMComponent {
 				return {...state, currentStateTask: task}
 			});
 		}
+	}
+
+	public setStepLiveCircle(stepLiveCircle: string) {
+		this.setState((state) => {
+			return {...state, stepLiveCircle}
+		});
 	}
 
 	public setStateHistoryNeedWrite(historyNeedWrite: boolean = true) {
@@ -204,15 +212,32 @@ class Sudoku extends BEMComponent {
 		const currentStateTask = _.get(this.state, 'currentStateTask');
 		this.setStateTask(setMainCells(currentStateTask));
 		this.setStateHistoryNeedWrite();
+		this.setStepLiveCircle(STEPS_LIVE_CIRCLE.HINTS);
 	}
 
 	public setHints() {
 		const currentStateTask: ICell[] = _.get(this.state, 'currentStateTask');
+		this.setStepLiveCircle(STEPS_LIVE_CIRCLE.CALCULATION);
 		this.setStateTask(calcHintsToTask(currentStateTask));
 	}
 
-	public calc(){
-		console.log('calc');
+	public calc() {
+		// TODO: in developing
+		alert('This action in developed. For now this app is only a helper');
+		return;
+
+		console.clear();
+
+		const currentStateTask: ICell[] = _.get(this.state, 'currentStateTask');
+		let newStateTask: ICell[] = _.get(this.state, 'currentStateTask');
+
+		currentStateTask.forEach((cell: ICell) => {
+			if (cell.value > 0) {
+				newStateTask = calcHintsToTask(updateCellInArray(newStateTask, calcCell(newStateTask, cell)));
+				this.setStateTask(newStateTask);
+			}
+		});
+		console.log('newStateTask:', newStateTask);
 	}
 
 	public render() {
@@ -221,6 +246,7 @@ class Sudoku extends BEMComponent {
 		const currentStateTask = _.get(this.state, 'currentStateTask');
 		const keyboardIsOpen = _.get(this.state, 'keyboardIsOpen', false);
 		const keyboardCell = _.get(this.state, 'keyboardCell', {});
+		const stepLiveCircle = _.get(this.state, 'stepLiveCircle', STEPS_LIVE_CIRCLE.INITIAL);
 
 		return (
 			<div className={this.block()}>
@@ -228,6 +254,7 @@ class Sudoku extends BEMComponent {
 					<SudokuBar
 						setHints={this.setHints}
 						calc={this.calc}
+						stepLiveCircle={stepLiveCircle}
 						fixMainCells={this.fixMainCells}/>
 				</div>
 

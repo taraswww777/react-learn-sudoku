@@ -57,7 +57,11 @@ export function hasValueInArray(rowsColsAreas: ICell[], value: number): boolean 
 	return false;
 }
 
-
 export function hasValueInHints(cell: ICell, value: number): boolean {
 	return _.indexOf(cell.hints, value) !== -1;
+}
+
+export function calcCell(task: ICell[], targetCell: ICell): ICell {
+	console.log('targetCell:', targetCell);
+	return targetCell;
 }

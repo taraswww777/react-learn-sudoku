@@ -131,3 +131,9 @@ export function genDefaultTask(): ICell[] {
 
 	return task;
 }
+
+export function updateCellInArray(task: ICell[], newCell: ICell) {
+	return _.map(task, (cell: ICell) =>
+		cell.key !== newCell.key ? cell : newCell
+	);
+}
